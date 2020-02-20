@@ -1,4 +1,5 @@
 from load_and_dump import read_in, data_exists, dump_data, get_data, write_submission
+import numpy as np
 
 def sort_books(scores, book_ids):
     return sorted(book_ids, key=lambda book_id: scores[book_id])
@@ -16,25 +17,43 @@ def transform_format(data):
 
     return output
 
+
+def best_next_lib(data):
+    max_scores = []
+    for lib in data['remaining_libs']:
+        x = max(data['D'] - lib['T'], 0) * lib['M']
+        score = sum(data['points'][book] for book in lib['books'][:x])
+        max_scores.append(score)
+    best_lib = np.argmax(max_scores)
+    return data['remaining_libs'][best_lib], best_lib
+
+
+def greedy_with_deadlines(data):
+    output = []
+    data['remaining_libs'] = data['libs'].copy()
+    while (data['D'] > 0) and data['remaining_libs']:
+        best_lib, best_lib_i = best_next_lib(data)
+        del data['remaining_libs'][best_lib_i]
+        data['D'] = data['D'] - best_lib['T']
+        output.append((best_lib['id'], data['libs'][best_lib['id']]['books']))
+    return output
+
+
 if __name__ == "__main__":
     # filename = 'a_example'
-    filename = 'b_read_on'
-    # filename = 'c_incunabula'
+    # filename = 'b_read_on'
+    filename = 'c_incunabula'
     # filename = 'd_tough_choices'
     # filename = 'e_so_many_books'
     # filename = 'f_libraries_of_the_world'
     
-    algorithm = 'hc'
+    algorithm = 'greedy_returns'
 
     data = read_in(filename)
 
-    output = transform_format(data)
-
-    write_submission(filename, output, mod='random')
-
-    sort_libs(data['points'], data['libs'])
-    output = transform_format(data)
-    write_submission('eerste_poging', output, mod='greedy')
+    output = greedy_with_deadlines(data)
+    
+    write_submission(filename, output, mod=algorithm)
     
 
     # if not data_exists(filename, algorithm) or algorithm == 'init':

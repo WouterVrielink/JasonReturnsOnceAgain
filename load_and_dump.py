@@ -30,7 +30,7 @@ def read_in(filename):
 
         points = [int(x) for x in next(rdr)]
 
-        data['B'] = B
+        data['D'] = D
         data['libs'] = []
         data['points'] = points
 
@@ -39,7 +39,7 @@ def read_in(filename):
 
             book_ids = [int(x) for x in next(rdr)]
 
-            library = {'T': T, 'M': M, 'books': book_ids}
+            library = {'id': library_index, 'T': T, 'M': M, 'books': book_ids}
 
             data['libs'].append(library)
 
