@@ -18,11 +18,18 @@ def transform_format(data):
 
 if __name__ == "__main__":
     filename = 'a_example'
+    filename = 'b_read_on'
+    filename = 'c_incunabula'
+    filename = 'd_tough_choices'
+    filename = 'e_so_many_books'
+    filename = 'f_libraries_of_the_world'
     algorithm = 'hc'
 
     data = read_in(filename)
 
-    print(data)
+    output = transform_format(data)
+
+    write_submission(filename, output, mod='random')
 
     # if not data_exists(filename, algorithm) or algorithm == 'init':
     #     # TODO DOE HIER INIT ALGORITME

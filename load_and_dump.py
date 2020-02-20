@@ -54,4 +54,4 @@ def write_submission(filename, data, mod):
 
         for lib, books in data:
             writer.writerow([lib, len(books)])
-            wirter.writerow(books)
+            writer.writerow(books)
