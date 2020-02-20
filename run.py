@@ -22,8 +22,10 @@ def best_next_lib(data):
     max_scores = []
     for lib in data['remaining_libs']:
         x = max(data['D'] - lib['T'], 0) * lib['M']
-        score = sum(data['points'][book] for book in lib['books'][:x])
+        candidate_books = sort_books(data['points'], list(set(lib['books']) - data['used_books']))
+        score = sum(data['points'][book] for book in candidate_books[:x])
         max_scores.append(score)
+        lib['candidate_books'] = candidate_books
     best_lib = np.argmax(max_scores)
     return data['remaining_libs'][best_lib], best_lib
 
@@ -31,11 +33,13 @@ def best_next_lib(data):
 def greedy_with_deadlines(data):
     output = []
     data['remaining_libs'] = data['libs'].copy()
+    data['used_books'] = set()
     while (data['D'] > 0) and data['remaining_libs']:
         best_lib, best_lib_i = best_next_lib(data)
         del data['remaining_libs'][best_lib_i]
         data['D'] = data['D'] - best_lib['T']
-        output.append((best_lib['id'], data['libs'][best_lib['id']]['books']))
+        data['used_books'] = data['used_books'] | set(data['libs'][best_lib['id']]['candidate_books'])
+        output.append((best_lib['id'], data['libs'][best_lib['id']]['candidate_books']))
     return output
 
 
@@ -47,7 +51,7 @@ if __name__ == "__main__":
     # filename = 'e_so_many_books'
     # filename = 'f_libraries_of_the_world'
     
-    algorithm = 'greedy_returns'
+    algorithm = 'greedy_returns_again'
 
     data = read_in(filename)
 
