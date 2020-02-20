@@ -1,5 +1,6 @@
 from load_and_dump import read_in, data_exists, dump_data, get_data, write_submission
 import numpy as np
+from score import get_score
 
 def sort_books(scores, book_ids):
     return sorted(book_ids, key=lambda book_id: scores[book_id])
