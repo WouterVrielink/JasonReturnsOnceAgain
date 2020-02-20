@@ -3,6 +3,17 @@ from load_and_dump import read_in, data_exists, dump_data, get_data, write_submi
 def sort_books(scores, book_ids):
     return sorted(book_ids, lambda book_id: scores[book_id])
 
+def sort_libs(scores, libs):
+    return sorted(libs, lambda lib: sum([scores[book] for book in lib['books']]))
+
+def transform_format(data):
+    output = []
+
+    counter = 0
+    for lib in data['libs']:
+        output.append((counter, lib['books']))
+        counter += 1
+
 if __name__ == "__main__":
     filename = 'a_example'
     algorithm = 'hc'
