@@ -34,10 +34,16 @@ def read_in(filename):
         data['libs'] = []
         data['points'] = points
 
+        # get only books that are worth more than 0
+        point_idxs = []
+        for index, score in enumerate(data['points']):
+            if score > 0:
+                point_idxs.append(index)
+
         for library_index in range(L):
             N, T, M = [int(x) for x in next(rdr)]
 
-            book_ids = [int(x) for x in next(rdr)]
+            book_ids = [int(x) for x in next(rdr) if int(x) in point_idxs]
 
             library = {'id': library_index, 'T': T, 'M': M, 'books': book_ids}
 
