@@ -1,10 +1,10 @@
 from load_and_dump import read_in, data_exists, dump_data, get_data, write_submission
 
 def sort_books(scores, book_ids):
-    return sorted(book_ids, lambda book_id: scores[book_id])
+    return sorted(book_ids, key=lambda book_id: scores[book_id])
 
 def sort_libs(scores, libs):
-    return sorted(libs, lambda lib: sum([scores[book] for book in lib['books']]))
+    return sorted(libs, key=lambda lib: sum([scores[book] for book in lib['books']]))
 
 def transform_format(data):
     output = []
@@ -17,12 +17,13 @@ def transform_format(data):
     return output
 
 if __name__ == "__main__":
-    filename = 'a_example'
+    # filename = 'a_example'
     filename = 'b_read_on'
-    filename = 'c_incunabula'
-    filename = 'd_tough_choices'
-    filename = 'e_so_many_books'
-    filename = 'f_libraries_of_the_world'
+    # filename = 'c_incunabula'
+    # filename = 'd_tough_choices'
+    # filename = 'e_so_many_books'
+    # filename = 'f_libraries_of_the_world'
+    
     algorithm = 'hc'
 
     data = read_in(filename)
@@ -30,6 +31,11 @@ if __name__ == "__main__":
     output = transform_format(data)
 
     write_submission(filename, output, mod='random')
+
+    sort_libs(data['points'], data['libs'])
+    output = transform_format(data)
+    write_submission('eerste_poging', output, mod='greedy')
+    
 
     # if not data_exists(filename, algorithm) or algorithm == 'init':
     #     # TODO DOE HIER INIT ALGORITME
