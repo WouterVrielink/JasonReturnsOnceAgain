@@ -35,10 +35,10 @@ def read_in(filename):
         data['points'] = points
 
         # get only books that are worth more than 0
-        point_idxs = []
+        point_idxs = set()
         for index, score in enumerate(data['points']):
             if score > 0:
-                point_idxs.append(index)
+                point_idxs.add(index)
 
         for library_index in range(L):
             N, T, M = [int(x) for x in next(rdr)]
