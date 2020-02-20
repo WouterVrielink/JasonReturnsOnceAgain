@@ -18,6 +18,8 @@ def transform_format(data):
 
     return output
 
+def get_avg(data, books):
+    return sum([data['points'][book] for book in books]) / len(books)
 
 def best_next_lib(data):
     max_scores = []
@@ -26,7 +28,7 @@ def best_next_lib(data):
         candidate_books = sort_books(data['points'], list(set(lib['books']) - data['used_books']))
         lib['candidate_books'] = candidate_books
         score = sum(data['points'][book] for book in candidate_books[:x])
-        max_scores.append(x)
+        max_scores.append(score/(lib['M'])**0.01)
     best_lib = np.argmax(max_scores)
     return data['remaining_libs'][best_lib], best_lib
 
@@ -49,13 +51,13 @@ def greedy_with_deadlines(data):
 
 if __name__ == "__main__":
     # filename = 'a_example'
-    filename = 'b_read_on'
-    filename = 'c_incunabula'
+    # filename = 'b_read_on'
+    # filename = 'c_incunabula'
     # filename = 'd_tough_choices'
     # filename = 'e_so_many_books'
-    # filename = 'f_libraries_of_the_world'
+    filename = 'f_libraries_of_the_world'
 
-    algorithm = 'greedy_returns_again_again2_deel3'
+    algorithm = 'greedy_returns_again_weird'
 
     data = read_in(filename)
 
