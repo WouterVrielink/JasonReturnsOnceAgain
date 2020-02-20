@@ -20,35 +20,38 @@ def get_data(filename, mod):
 def data_exists(filename, mod):
     return os.path.isfile(build_filestring(filename, mod=mod))
 
-# TODO OUDE UIT FOTOS
 def read_in(filename):
-    data = []
+    data = {}
 
     with open(f'inputs/{filename}.txt', 'r') as df:
         rdr = csv.reader(df, delimiter=' ')
 
-        N = int(next(rdr)[0])
+        B, L, D = [int(x) for x in next(rdr)]
 
-        for i in range(N):
-            line = next(rdr)
-            o, M, tags = line[0], line[1], line[2:]
+        points = [int(x) for x in next(rdr)]
 
-            photo = Photo(i, o, M, tags)
-            # photo['id'] = i
-            # photo['orientation'] = o
-            # photo['#tags'] = M
-            # photo['tags'] = tags
+        data['B'] = B
+        data['libs'] = []
+        data['points'] = points
 
-            data.append(photo)
+        for library_index in range(L):
+            N, T, M = [int(x) for x in next(rdr)]
+
+            book_ids = [int(x) for x in next(rdr)]
+
+            library = {'T': T, 'M': M, 'books': book_ids}
+
+            data['libs'].append(library)
 
     return data
 
-def write_submission(filename, iets, mod):
+def write_submission(filename, data, mod):
     with open(build_filestring(filename, mod=mod, folder='solutions', ftype='txt'), 'w+') as outfile:
         writer = csv.writer(outfile, delimiter=' ', lineterminator="\n")
 
         # TODO HEADER GOES HERE
-        writer.writerow(["hehe"])
+        writer.writerow([len(data)])
 
-        for el in iets:
-            writer.writerow([el])
+        for lib, books in data:
+            writer.writerow([lib, len(books)])
+            wirter.writerow(books)
