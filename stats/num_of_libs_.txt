@@ -1,0 +1,6 @@
+"['a_example.txt', 2]"
+"['b_read_on.txt', 100]"
+"['c_incunabula.txt', 10000]"
+"['d_tough_choices.txt', 30000]"
+"['e_so_many_books.txt', 1000]"
+"['f_libraries_of_the_world.txt', 1000]"
