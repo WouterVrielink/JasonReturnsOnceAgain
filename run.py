@@ -14,6 +14,8 @@ def transform_format(data):
         output.append((counter, lib['books']))
         counter += 1
 
+    return output
+
 if __name__ == "__main__":
     filename = 'a_example'
     algorithm = 'hc'
