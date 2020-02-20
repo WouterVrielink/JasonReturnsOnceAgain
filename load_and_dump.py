@@ -3,29 +3,28 @@ import os
 import csv
 import numpy as np
 
-def build_filestring(filename, mod='init', folder='data'):
-    return f'{folder}/{filename}_{mod}.pkl'
+def build_filestring(filename, mod, folder='data', ftype='pkl'):
+    return f'{folder}/{filename}_{mod}.{ftype}'
 
-def dump_data(data, filename, mod='init'):
+def dump_data(filename, data, mod):
     pickle.dump(data, open(build_filestring(filename, mod=mod), "wb"))
 
-def get_data(filename, mod='init'):
+def get_data(filename, mod):
     fs = build_filestring(filename, mod=mod)
 
     if os.path.isfile(fs):
-        print('Data loading!')
-        return pickle.load(open(fs, "wb"))
+        return pickle.load(open(fs, "rb"))
     else:
         print('File does not exist!')
 
-def data_exists(filename, mod='init'):
+def data_exists(filename, mod):
     return os.path.isfile(build_filestring(filename, mod=mod))
 
 # TODO OUDE UIT FOTOS
 def read_in(filename):
     data = []
 
-    with open(f'inputs/{filename}', 'r') as df:
+    with open(f'inputs/{filename}.txt', 'r') as df:
         rdr = csv.reader(df, delimiter=' ')
 
         N = int(next(rdr)[0])
@@ -44,12 +43,12 @@ def read_in(filename):
 
     return data
 
-def write_submission(filename, iets):
-    with open(build_filestring(filename, mod='hc', folder='solutions'), 'w+') as outfile:
+def write_submission(filename, iets, mod):
+    with open(build_filestring(filename, mod=mod, folder='solutions', ftype='txt'), 'w+') as outfile:
         writer = csv.writer(outfile, delimiter=' ', lineterminator="\n")
 
         # TODO HEADER GOES HERE
-        writer.writerow()
+        writer.writerow(["hehe"])
 
         for el in iets:
-            writer.writerow(el)
+            writer.writerow([el])
