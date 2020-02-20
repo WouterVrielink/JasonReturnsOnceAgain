@@ -24,9 +24,9 @@ def best_next_lib(data):
     for lib in data['remaining_libs']:
         x = max(data['D'] - lib['T'], 0) * lib['M']
         candidate_books = sort_books(data['points'], list(set(lib['books']) - data['used_books']))
-        score = sum(data['points'][book] for book in candidate_books[:x])
-        max_scores.append(score)
         lib['candidate_books'] = candidate_books
+        score = sum(data['points'][book] for book in candidate_books[:x])
+        max_scores.append(x)
     best_lib = np.argmax(max_scores)
     return data['remaining_libs'][best_lib], best_lib
 
@@ -40,26 +40,29 @@ def greedy_with_deadlines(data):
         del data['remaining_libs'][best_lib_i]
         data['D'] = data['D'] - best_lib['T']
         data['used_books'] = data['used_books'] | set(data['libs'][best_lib['id']]['candidate_books'])
-        output.append((best_lib['id'], data['libs'][best_lib['id']]['candidate_books']))
+        if data['libs'][best_lib['id']]['candidate_books']:
+            output.append((best_lib['id'], data['libs'][best_lib['id']]['candidate_books']))
+        else:
+            break
     return output
 
 
 if __name__ == "__main__":
     # filename = 'a_example'
-    # filename = 'b_read_on'
+    filename = 'b_read_on'
     filename = 'c_incunabula'
     # filename = 'd_tough_choices'
     # filename = 'e_so_many_books'
     # filename = 'f_libraries_of_the_world'
-    
-    algorithm = 'greedy_returns_again'
+
+    algorithm = 'greedy_returns_again_again2_deel3'
 
     data = read_in(filename)
 
     output = greedy_with_deadlines(data)
-    
+
     write_submission(filename, output, mod=algorithm)
-    
+
 
     # if not data_exists(filename, algorithm) or algorithm == 'init':
     #     # TODO DOE HIER INIT ALGORITME
